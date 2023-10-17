@@ -71,7 +71,7 @@ public class TokimonProcessor {
                 for (int i = 0; i < t.getTeam().size(); i++)
                 {
                     listOfCompatibilities.add(t.getTeam().get(i).getCompatibility());
-                    System.out.println(listOfCompatibilities.get(i).getScore());
+                    // System.out.println(listOfCompatibilities.get(i).getScore());
                 }
                 Compatibility temp = listOfCompatibilities.get(0);
                 listOfCompatibilities.set(0, listOfCompatibilities.get(listOfCompatibilities.size()-1));
@@ -84,9 +84,11 @@ public class TokimonProcessor {
                 
                 // Add the main Tokimon to the list of all Tokimons
                 teamTokimons.add(mainToki);
+                
+                // **** validate compatibilities with others
 
-                for (Tokimon td : teamTokimons)
-                System.out.println(td.getName());
+                // for (Tokimon td : teamTokimons)
+                // System.out.println(td.getName());
 
             } catch (IOException e) {
                 System.err.println("Error: Reading file." + subfile);
@@ -98,8 +100,10 @@ public class TokimonProcessor {
 
         Team combinedTeam = new Team();
         combinedTeam.setTeam(teamTokimons);
-        
-        CSVwriter.writeTeamToCSV(combinedTeam, "outputPath.csv");
+        TeamAllocator ta = new TeamAllocator();
+        List<Team> teams = ta.organizeIntoTeams(teamTokimons);
+
+        CSVwriter.writeTeamToCSV(teams, "outputPath.csv");
      
     
     }
