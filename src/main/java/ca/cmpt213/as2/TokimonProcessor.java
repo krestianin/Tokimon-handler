@@ -10,7 +10,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.google.gson.Gson;
 
 
@@ -20,18 +23,18 @@ public class TokimonProcessor {
     static List<Team> Teams = new ArrayList<Team>();
     public static void main(String[] args) {
       // "./testdata/InputTestDataSets"
-      if (args.length != 1) {
+      if (args.length != 2) {
         System.err.println("Error: Incorrect number of arguments provided.");
         System.err.println("Expected: [Path to input JSON files] [Path to output directory]");
         System.exit(-1);
     }
         File folder = new File(args[0]);
-
+        String output = args[1];
         File arr[] = folder.listFiles();
 
         JSONFilter(arr, 0);
   
-        readFiles(files);
+        readFiles(files, output);
     //   File[] subFolders = folder.listFiles();
     //   // System.out.println(folder.isDirectory());
     //   if (subFolders != null) {
@@ -43,7 +46,7 @@ public class TokimonProcessor {
     }
 
 
-    private static void readFiles(List<File> files2){
+    private static void readFiles(List<File> files2, String output){
         if (files2 == null) {
             System.err.println("Error: No JSON files found.");
             System.exit(-1);
@@ -67,17 +70,20 @@ public class TokimonProcessor {
                 // Assuming the first Tokimon in the team list is the main Tokimon
                 Tokimon mainToki = t.getTeam().get(0);
                 mainToki.setExtraComment(t.getExtra_comments());
-                List<Compatibility> listOfCompatibilities = new ArrayList<>();
-                for (int i = 0; i < t.getTeam().size(); i++)
+                Map<String, Compatibility> mapOfCompatibilities = new HashMap<>();
+                for (int i = 1; i < t.getTeam().size(); i++)
                 {
-                    listOfCompatibilities.add(t.getTeam().get(i).getCompatibility());
+                    mapOfCompatibilities.put(t.getTeam().get(i).getId(),t.getTeam().get(i).getCompatibility());
                     // System.out.println(listOfCompatibilities.get(i).getScore());
                 }
-                Compatibility temp = listOfCompatibilities.get(0);
-                listOfCompatibilities.set(0, listOfCompatibilities.get(listOfCompatibilities.size()-1));
-                listOfCompatibilities.set(listOfCompatibilities.size()-1, temp);
+                
+                // Compatibility temp = listOfCompatibilities.get(0);
+                // listOfCompatibilities.set(0, listOfCompatibilities.get(listOfCompatibilities.size()-1));
+                // listOfCompatibilities.set(listOfCompatibilities.size()-1, temp);
+
+
                 // System.out.println(listOfCompatibilities);
-                mainToki.setCompatibilities(listOfCompatibilities);
+                mainToki.setCompatibilities(mapOfCompatibilities);
                 // System.out.println(t.getTeam().get(0).getCompatibilities().get(0).getScore());
                 // Add compatibilities for the main Tokimon
                 // mainToki.setCompatibilities(t.getTeam().subList(1, t.getTeam().size()));
@@ -98,12 +104,12 @@ public class TokimonProcessor {
         
 
 
-        Team combinedTeam = new Team();
-        combinedTeam.setTeam(teamTokimons);
+        // Team combinedTeam = new Team();
+        // combinedTeam.setTeam(teamTokimons);
         TeamAllocator ta = new TeamAllocator();
         List<Team> teams = ta.organizeIntoTeams(teamTokimons);
 
-        CSVwriter.writeTeamToCSV(teams, "outputPath.csv");
+        CSVwriter.writeTeamToCSV(teams, output+"/team_info.csv");
      
     
     }

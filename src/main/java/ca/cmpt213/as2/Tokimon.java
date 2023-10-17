@@ -1,6 +1,7 @@
 package ca.cmpt213.as2;
 
 import java.util.List;
+import java.util.Map;
 
 public class Tokimon {
     private String name;
@@ -8,7 +9,8 @@ public class Tokimon {
     private Compatibility compatibility;
 
     private String extraComment;
-    private List<Compatibility> compatibilities;
+    private Map<String, Compatibility> compatibilities;
+    private List<String> ids;
 
 
     // Getters and setters
@@ -28,11 +30,11 @@ public class Tokimon {
         this.id = id;
     }
 
-    public List<Compatibility> getCompatibilities() {
+    public Map<String, Compatibility> getCompatibilities() {
         return compatibilities;
     }
 
-    public void setCompatibilities(List<Compatibility> compatibilities) {
+    public void setCompatibilities(Map<String, Compatibility> compatibilities) {
         this.compatibilities = compatibilities;
     }
 
@@ -51,6 +53,7 @@ public class Tokimon {
     public Compatibility getCompatibility() {
         return compatibility;
     }
+    
 }
 
 class Compatibility {

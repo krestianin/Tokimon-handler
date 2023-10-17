@@ -8,7 +8,7 @@ public class TeamAllocator {
         Map<String, Team> teamsMap = new HashMap<>();
 
         for (Tokimon toki : allTokimons) {
-            System.out.println(teamsMap.toString());
+            // System.out.println(teamsMap.toString());
             String teamName = extractTeamName(toki.getName());
 
             if (teamsMap.containsKey(teamName)) {
@@ -46,52 +46,52 @@ public class TeamAllocator {
         return tokimonName.split(" ")[0];
     }
 
-    private static boolean isValidToAdd(Tokimon toki, Team team, List<Tokimon> allTokimons) {
-        // Check if Tokimon is already in a team
-        for (Tokimon teamToki : team.getTeam()) {
-            if (teamToki.getId().equalsIgnoreCase(toki.getId().trim())) {
-                // Check for consistent properties
-                if (!teamToki.getName().equalsIgnoreCase(toki.getName().trim())) {
-                    return false;
-                }
-            }
-        }
+    // private static boolean isValidToAdd(Tokimon toki, Team team, List<Tokimon> allTokimons) {
+    //     // Check if Tokimon is already in a team
+    //     for (Tokimon teamToki : team.getTeam()) {
+    //         if (teamToki.getId().equalsIgnoreCase(toki.getId().trim())) {
+    //             // Check for consistent properties
+    //             if (!teamToki.getName().equalsIgnoreCase(toki.getName().trim())) {
+    //                 return false;
+    //             }
+    //         }
+    //     }
 
-        // Check if Tokimon is mentioned by others in the team
-        for (Tokimon otherToki : allTokimons) {
-            if (otherToki.getCompatibilities() != null) {
-                for (Compatibility comp : otherToki.getCompatibilities()) {
-                    if (comp.getComment().contains(toki.getId())) {
-                        return true;
-                    }
-                }
-            }
-        }
+    //     // Check if Tokimon is mentioned by others in the team
+    //     for (Tokimon otherToki : allTokimons) {
+    //         if (otherToki.getCompatibilities() != null) {
+    //             for (Compatibility comp : otherToki.getCompatibilities()) {
+    //                 if (comp.getComment().contains(toki.getId())) {
+    //                     return true;
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
-    private static boolean isValidTeam(Team team) {
-        // Validate if each Tokimon in the team mentions all other Tokimons
-        for (Tokimon toki : team.getTeam()) {
-            for (Tokimon otherToki : team.getTeam()) {
-                if (!toki.getId().equalsIgnoreCase(otherToki.getId())) {
-                    boolean isMentioned = false;
-                    for (Compatibility comp : toki.getCompatibilities()) {
-                        if (comp.getComment().contains(otherToki.getId())) {
-                            isMentioned = true;
-                            break;
-                        }
-                    }
-                    if (!isMentioned) {
-                        return false;
-                    }
-                }
-            }
-        }
+    // private static boolean isValidTeam(Team team) {
+    //     // Validate if each Tokimon in the team mentions all other Tokimons
+    //     for (Tokimon toki : team.getTeam()) {
+    //         for (Tokimon otherToki : team.getTeam()) {
+    //             if (!toki.getId().equalsIgnoreCase(otherToki.getId())) {
+    //                 boolean isMentioned = false;
+    //                 for (Compatibility comp : toki.getCompatibilities()) {
+    //                     if (comp.getComment().contains(otherToki.getId())) {
+    //                         isMentioned = true;
+    //                         break;
+    //                     }
+    //                 }
+    //                 if (!isMentioned) {
+    //                     return false;
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     // public static void main(String[] args) {
     //     // Test the organizeIntoTeams function with your list of Tokimons

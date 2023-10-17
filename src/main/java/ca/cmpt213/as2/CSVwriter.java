@@ -9,11 +9,10 @@ public class CSVwriter {
         try (FileWriter writer = new FileWriter(outputPath)) {
             writer.append("Team#,From Toki,To Toki,Score,Comment,,Extra\n");
             int i = 1;
-
             for (Team team : teamsArray)
             {
                 writer.append("Team ");
-                writer.append(String.valueOf(i));
+                writer.append(String.valueOf(i++));
                 writer.append(",,,,,,\n");
 
                 List<Tokimon> tokimons = team.getTeam();
@@ -23,26 +22,19 @@ public class CSVwriter {
                 tokimons.sort((a, b) -> a.getId().compareToIgnoreCase(b.getId()));
 
                 for (Tokimon toki : tokimons) {
-                    int compatibilityIndex = 0;
-                    for (Tokimon otherToki : tokimons) {
-                        if (!toki.getId().equalsIgnoreCase(otherToki.getId())) {
-                            if (compatibilityIndex < toki.getCompatibilities().size()) {
-                            Compatibility compatibility = toki.getCompatibilities().get(compatibilityIndex);
-                
-                            writer.append(",");
-                            writer.append(toki.getId());
-                            writer.append(",");
-                            writer.append(otherToki.getId());
-                            writer.append(",");
-                            writer.append(String.valueOf(compatibility.getScore()));
-                            writer.append(",");
-                            writer.append("\"" + compatibility.getComment().replace("\"", "\"\"") + "\"");
-                            writer.append(",,");
-                            writer.append("\n");
-                            
-                            compatibilityIndex++; // Increment the index after each compatibility is processed
-                            }
-                        }
+                    for (String key : toki.getCompatibilities().keySet()) {
+                        // String toTokiId = extractTokiIdFromComment(toki.getCompatibilities().get(key).getComment());
+
+                        writer.append(",");
+                        writer.append(toki.getId());
+                        writer.append(",");
+                        writer.append(key);
+                        writer.append(",");
+                        writer.append(String.valueOf(toki.getCompatibilities().get(key).getScore()));
+                        writer.append(",");
+                        writer.append("\"" + toki.getCompatibilities().get(key).getComment().replace("\"", "\"\"") + "\"");
+                        writer.append(",,");
+                        writer.append("\n");
                     }
                     writer.append(",");
                     writer.append(toki.getId());
@@ -58,23 +50,14 @@ public class CSVwriter {
                     writer.append(",,");
                     writer.append(toki.getExtraComment());
                     writer.append("\n");
-                    // writer.append(",");
-                    // writer.append(toki.getId());
-                    // writer.append(",");
-                    // writer.append("-");
-                    // writer.append(",");
-                    // writer.append(String.valueOf(toki.getCompatibility().getScore()));
-                    // writer.append(",");
-                    // writer.append(toki.getCompatibility().getComment());
-                    // writer.append(",,");
-            
-                    // writer.append("\n");
+          
                 }
-                i++;
+
             }
         } catch (IOException e) {
             System.err.println("Error writing to CSV file: " + outputPath);
             e.printStackTrace();
         }
     }
+
 }
