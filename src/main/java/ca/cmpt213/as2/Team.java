@@ -2,7 +2,7 @@ package ca.cmpt213.as2;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// Team of Tokimons
 public class Team {
     private List<Tokimon> team;
     private String extra_comments;

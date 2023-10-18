@@ -3,6 +3,8 @@ package ca.cmpt213.as2;
 import java.util.List;
 import java.util.Map;
 
+// Tokimon class
+
 public class Tokimon {
     private String name;
     private String id;

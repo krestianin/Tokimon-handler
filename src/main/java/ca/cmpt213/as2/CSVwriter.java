@@ -3,7 +3,7 @@ package ca.cmpt213.as2;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-
+// Generate a comma separated value file (.csv) which contains the outputting data
 public class CSVwriter {
     public static void writeTeamToCSV(List<Team> teamsArray, String outputPath) {
         try (FileWriter writer = new FileWriter(outputPath)) {
